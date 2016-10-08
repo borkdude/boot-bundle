@@ -10,6 +10,7 @@
 (task-options!
  pom {:project 'boot-bundle
       :version +version+
-      :description "boot-bundle"
+      :description "boot-bundle, DRY for dependencies"
       :url "https://github.com/borkdude/boot-bundle"
-      :scm {:url "https://github.com/borkdude/boot-bundle"}})
+      :scm {:url "https://github.com/borkdude/boot-bundle"}
+      :license {"EPL" "http://www.eclipse.org/legal/epl-v10.html"}})
