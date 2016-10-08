@@ -69,7 +69,6 @@ BOOT_BUNDLE_FILE="../bundles.edn"
 (reset! boot-bundle/bundle-file-path "../bundles.edn")
 ```
 
-to specify the location of the bundle file. 
 Searching the local file system has priority over searching the classpath.
 
 Then run boot as you normally would. Everything just works. It's just data.
