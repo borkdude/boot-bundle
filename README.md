@@ -33,10 +33,10 @@ Load this library before you load your other dependencies in `build.boot`:
 ```clojure
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]
-            ;; if you share your bundle via clojars, include it here
+            ;; if you share your bundle via clojars, uncomment and change:
             ;; [your-bundle "0.1.0-SNAPSHOT" :scope "test"]
             ]
-          ;; include this line if you use a bundle file from the current project's classpath
+          ;; if you use a bundle file from the current project's classpath, uncomment:
           ;; :resource-paths #{"resources"}
           )
 
