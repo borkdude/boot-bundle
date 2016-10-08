@@ -45,7 +45,9 @@ Wrap the `dependencies` vector in `set-env!` with `expand-keywords`:
  (expand-keywords
   '[:base
     :clojurescript
+    ;; combine this with your remaining dependencies:
     [reagent "0.6.0"]
+    ...
    ]))
 ```      
 
