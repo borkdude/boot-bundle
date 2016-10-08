@@ -78,7 +78,7 @@ BOOT_BUNDLE_FILE="../bundles.edn"
 
 Searching the local file system has priority over searching the classpath.
 
-That's it. You can now move on.
+That's it. You can now use boot as you normally would.
 
 ## Advanced usage
 
