@@ -88,7 +88,6 @@ Boot-bundle lets you set the bundle map if you want to. For example, just write
 (reset! boot-bundle/bundle-map
         (boot-bundle/read-from-file "../bundle.edn"))
 ```
-in your `build.boot` file.
 
 Note that validation only happens when using `read-from-file`, so when doing
 something else, you may want to validate yourself:
