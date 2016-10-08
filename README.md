@@ -1,5 +1,5 @@
 # boot-bundle
-`boot-bundle`, DRY for dependencies
+boot-bundle, DRY for dependencies
 
 > It's just data - Rich Hickey
 
@@ -28,7 +28,7 @@ Example:
  :clojurescript [org.clojure/clojurescript "1.9.229"]}
 ```
 
-Load this library before you load your other dependencies in `build.boot`:
+Load boot-bundle before you load your other dependencies in `build.boot`:
 
 ```clojure
 (set-env! :dependencies
@@ -82,7 +82,7 @@ Then run boot as you normally would. Everything just works. It's just data.
 
 ## Advanced usage
 
-`boot-bundle` lets you set the bundle map if you want to. For example, just write
+boot-bundle lets you set the bundle map if you want to. For example, just write
 
 ```clojure
 (reset! boot-bundle/bundle-map
@@ -102,7 +102,7 @@ This software was commissioned and sponsored by [Doctor Evidence](http://doctore
 
 ## Misc
 
-`boot-bundle` is a lightweight library without any external dependencies. 
+boot-bundle is a lightweight library without any external dependencies. 
 
 ## License
 
