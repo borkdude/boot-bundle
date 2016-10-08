@@ -10,46 +10,47 @@
             (System/getenv "BOOT_BUNDLE_FILE")
             "boot.bundle.edn"))
 
+(defn validate-bundle [m]
+  (let [assert-vector #(assert
+                        (vector? %)
+                        (format "Bundle value should be vector: %s" %))
+        key-set (set (keys m))
+        values (vals m)]
+    (assert (every? keyword? key-set)
+            "Bundle keys should be keywords.")
+    (doseq [value values]
+      (assert-vector value)
+      (or (symbol? (first value))
+          (doseq [v value]
+            (if (keyword? v)
+              (assert (contains? key-set v)
+                      (format "Invalid key reference: %s" v))
+              (assert-vector v))))))
+  m)
+
 (defn read-from-file
   "Reads bundle file"
   ([]
    (read-from-file @bundle-file-path))
   ([file-path]
    (let [file (io/file file-path)]
-     (if (.exists file)
-       (do (println "boot-bundle found bundle file:"
-                    (.getAbsolutePath file))
-           (edn/read-string (slurp file)))
-       (if-let [file (io/file (io/resource file-path))]
-         (do (println "boot-bundle found bundle file on classpath:"
-                      file-path)
-             (edn/read-string (slurp file)))
-         (throw (RuntimeException.
-                 (str "boot-bundle file not found at "
-                      file-path))))))))
-
-(defn validate-bundle-map [m]
-  (when-not
-      (and (every? keyword? (keys m))
-           (every? (fn [v]
-                     (and
-                      (vector? v)
-                      (or (symbol? (first v))
-                          (every? #(or (vector? %)
-                                       (keyword? %))
-                                  v))))
-                   (vals m)))
-    (throw (RuntimeException.
-            "bundle map isn't valid"))))
-
-(defn set-bundle-map! [m]
-  (validate-bundle-map m)
-  (reset! bundle-map m))
+     (validate-bundle
+      (if (.exists file)
+        (do (println "boot-bundle found bundle file:"
+                     (.getAbsolutePath file))
+            (edn/read-string (slurp file)))
+        (if-let [file (io/file (io/resource file-path))]
+          (do (println "boot-bundle found bundle file on classpath:"
+                       file-path)
+              (edn/read-string (slurp file)))
+          (throw (RuntimeException.
+                  (str "boot-bundle file not found at "
+                       file-path)))))))))
 
 (defn get-bundle-map []
   (or @bundle-map
-    (let [from-file (read-from-file)]
-      (set-bundle-map! from-file))))
+      (let [from-file (read-from-file)]
+        (reset! bundle-map from-file))))
 
 (declare expand-keywords)
 
@@ -64,8 +65,9 @@
        deps
        [deps]))
     (throw
-     (RuntimeException. (format "Invalid bundle key: %s"
-                                k)))))
+     (RuntimeException.
+      (format "Invalid bundle key: %s"
+              k)))))
 
 (defn expand-keywords
   "Expands keywords in the input seq to coordinates."
