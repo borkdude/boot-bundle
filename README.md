@@ -88,13 +88,18 @@ boot-bundle lets you set the bundle map if you want to. For example, just write
 (reset! boot-bundle/bundle-map
         (boot-bundle/read-from-file "../bundles.edn"))
 ```
-or 
+in your `build.boot` file.
+
+Note that validation only happens when using `read-from-file`, so when doing
+something else, you may want to do it like this:
+ 
 ```clojure
 (swap! boot-bundle/bundle-map
-       assoc :schema '[prismatic/schema "1.1.3"])
+       #(boot-bundle/validate-bundle 
+         (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
-in your `build.boot` file.
+in
 
 ## Funding
 
@@ -112,7 +117,7 @@ Sure!
 (reset! boot-bundle/bundle-map 
   (merge 
     (boot-bundle/read-from-file "bundle1.edn")
-    (boot-bundle/read-from-file "bundle2.edn")
+    (boot-bundle/read-from-file "bundle2.edn")))
 ```
 
 boot-bundle is a lightweight library without any external dependencies. 
