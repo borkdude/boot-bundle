@@ -50,8 +50,9 @@ Wrap the `dependencies` vector in `set-env!` with `expand-keywords`:
     ;; ...
    ]))
 ```      
+By default boot-bundle searches for the file `boot.bundle.edn` on the classpath.
+This can be overriden by setting either
 
-Set either 
 - the system property `boot.bundle.file`:
 ```
 BOOT_JVM_OPTIONS="-Dboot.bundle.file=../bundles.edn"
@@ -68,7 +69,8 @@ BOOT_BUNDLE_FILE="../bundles.edn"
 (reset! boot-bundle/bundle-file-path "../bundles.edn")
 ```
 
-to specify the location of the bundle file.
+to specify the location of the bundle file. 
+Searching the local file system has priority over searching the classpath.
 
 Then run boot as you normally would. Everything just works. It's just data.
 
