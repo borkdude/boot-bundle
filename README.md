@@ -71,6 +71,10 @@ or
 
 in your `build.boot` file.
 
+## Funding
+
+This software was commissioned and sponsored by [Doctor Evidence](http://doctorevidence.com/). The Doctor Evidence mission is to improve clinical outcomes by finding and delivering medical evidence to healthcare professionals, medical associations, policy makers and manufacturers through revolutionary solutions that enable anyone to make informed decisions and policies using medical data that is more accessible, relevant and readable.
+
 ## Misc
 
 `boot-bundle` is a lightweight library without any external dependencies. 
