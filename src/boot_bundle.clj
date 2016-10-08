@@ -7,24 +7,26 @@
 
 (reset! bundle-file-path
         (or (System/getProperty "boot.bundle.file")
-            (System/getenv "BOOT_BUNDLE_FILE")))
+            (System/getenv "BOOT_BUNDLE_FILE")
+            "boot.bundle.edn"))
 
 (defn read-from-file
   "Reads bundle file"
   ([]
-   (if-let [file-path @bundle-file-path]
-     (read-from-file file-path)
-     (throw (RuntimeException.
-             "boot-bundle file path not set"))))
+   (read-from-file @bundle-file-path))
   ([file-path]
    (let [file (io/file file-path)]
      (if (.exists file)
-       (do (println "boot-bundle is using bundle file:"
+       (do (println "boot-bundle found bundle file:"
                     (.getAbsolutePath file))
            (edn/read-string (slurp file)))
-       (throw (RuntimeException.
-               (str "boot-bundle file not found at "
-                    file-path)))))))
+       (if-let [file (io/file (io/resource file-path))]
+         (do (println "boot-bundle found bundle file on classpath:"
+                      file-path)
+             (edn/read-string (slurp file)))
+         (throw (RuntimeException.
+                 (str "boot-bundle file not found at "
+                      file-path))))))))
 
 (defn validate-bundle-map [m]
   (when-not
