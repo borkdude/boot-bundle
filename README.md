@@ -3,8 +3,6 @@
 
 > It's just data - Rich Hickey
 
-`boot-bundle` is a lightweight library without any external dependencies. 
-
 ## Why
 You have many projects with overlapping dependencies. You don't want to repeat yourself. 
 
@@ -72,6 +70,10 @@ or
 ```
 
 in your `build.boot` file.
+
+## Misc
+
+`boot-bundle` is a lightweight library without any external dependencies. 
 
 ## License
 
