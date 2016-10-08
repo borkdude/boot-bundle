@@ -91,15 +91,13 @@ boot-bundle lets you set the bundle map if you want to. For example, just write
 in your `build.boot` file.
 
 Note that validation only happens when using `read-from-file`, so when doing
-something else, you may want to do it like this:
+something else, you may want to validate yourself:
  
 ```clojure
 (swap! boot-bundle/bundle-map
        #(boot-bundle/validate-bundle 
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
-
-in
 
 ## Funding
 
