@@ -100,7 +100,20 @@ in your `build.boot` file.
 
 This software was commissioned and sponsored by [Doctor Evidence](http://doctorevidence.com/). The Doctor Evidence mission is to improve clinical outcomes by finding and delivering medical evidence to healthcare professionals, medical associations, policy makers and manufacturers through revolutionary solutions that enable anyone to make informed decisions and policies using medical data that is more accessible, relevant and readable.
 
-## Misc
+## FAQ
+- Why isn't boot-bundle eating its own dog food? 
+
+boot-bundle has no dependencies
+
+- Can I use multiple bundles and merge them?
+
+Sure!
+```
+(reset! boot-bundle/bundle-map 
+  (merge 
+    (boot-bundle/read-from-file "bundle1.edn")
+    (boot-bundle/read-from-file "bundle2.edn")
+```
 
 boot-bundle is a lightweight library without any external dependencies. 
 
