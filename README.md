@@ -62,18 +62,18 @@ This can be overriden by setting either
 
 - the system property `boot.bundle.file`:
 ```
-BOOT_JVM_OPTIONS="-Dboot.bundle.file=../bundles.edn"
+BOOT_JVM_OPTIONS="-Dboot.bundle.file=../bundle.edn"
 ```
 - the environment variable `BOOT_BUNDLE_FILE`:
 
 ``` clojure
-BOOT_BUNDLE_FILE="../bundles.edn"
+BOOT_BUNDLE_FILE="../bundle.edn"
 ```
 
 - the atom `bundle-file-path`:
 
 ``` clojure
-(reset! boot-bundle/bundle-file-path "../bundles.edn")
+(reset! boot-bundle/bundle-file-path "../bundle.edn")
 ```
 
 Searching the local file system has priority over searching the classpath.
@@ -86,7 +86,7 @@ Boot-bundle lets you set the bundle map if you want to. For example, just write
 
 ```clojure
 (reset! boot-bundle/bundle-map
-        (boot-bundle/read-from-file "../bundles.edn"))
+        (boot-bundle/read-from-file "../bundle.edn"))
 ```
 in your `build.boot` file.
 
