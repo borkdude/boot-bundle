@@ -51,10 +51,25 @@ Wrap the `dependencies` vector in `set-env!` with `expand-keywords`:
    ]))
 ```      
 
-Set either the system property `boot.bundle.file` or the environment variable `BOOT_BUNDLE_FILE` to specify the location of the bundle file:
+Set either 
+- the system property `boot.bundle.file`:
 ```
 BOOT_JVM_OPTIONS="-Dboot.bundle.file=../bundles.edn"
 ```
+- the environment variable `BOOT_BUNDLE_FILE`:
+
+``` clojure
+BOOT_BUNDLE_FILE="../bundles.edn"
+```
+
+- the atom `bundle-file-path`:
+
+``` clojure
+(reset! boot-bundle/bundle-file-path "../bundles.edn")
+```
+
+to specify the location of the bundle file.
+
 Then run boot as you normally would. Everything just works. It's just data.
 
 ## Advanced usage
