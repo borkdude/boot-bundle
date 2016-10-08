@@ -34,12 +34,13 @@ Load this library before you load your other dependencies in `build.boot`:
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])         
 ```
-or if you use a bundle file from the classpath of the current project:
+(or if you use a bundle file from the classpath of the current project:
 ```clojure
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]]
           :resource-paths #{"resources"})
 ```
+)
 and require it:
 ```clojure
 (require '[boot-bundle :refer [expand-keywords]])
