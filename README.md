@@ -36,7 +36,7 @@ Load this library before you load your other dependencies in `build.boot`:
 (require '[boot-bundle :refer [expand-keywords]])          
 ```
 
-Wrap the `dependencies` vector in `set-env!` with `expand-keyword` if you want to use bundles defined by keyword:
+Wrap the `dependencies` vector in `set-env!` with `expand-keywords`:
 
 ```clojure
 (set-env!
