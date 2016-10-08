@@ -2,6 +2,19 @@
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]))
 
+(defn validate-bundle-map [m]
+  (when-not
+      (and (every? keyword? (keys m))
+           (every? (fn [v]
+                     (vector? v)
+                     (or (symbol? (first v))
+                         (every? #(or (vector? %)
+                                      (keyword? %))
+                                 v)))
+                   (vals m)))
+    (throw (RuntimeException.
+            "bundle map isn't valid"))))
+
 (def bundle-file-path (atom nil))
 (def bundle-map (atom nil))
 
@@ -21,7 +34,6 @@
      (if (.exists file)
        (do (println "boot-bundle is using bundle file:"
                     (.getAbsolutePath file))
-           ;; TODO, some verification
            (edn/read-string (slurp file)))
        (throw (RuntimeException.
                (str "boot-bundle file not found at "
@@ -29,7 +41,9 @@
 
 (defn get-bundle-map []
   (or @bundle-map
-      (reset! bundle-map (read-from-file))))
+      (let [from-file (read-from-file)]
+        (validate-bundle-map from-file)
+        (reset! bundle-map from-file))))
 
 (declare expand-keywords)
 
