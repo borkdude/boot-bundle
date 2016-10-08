@@ -49,8 +49,7 @@
 
 (defn get-bundle-map []
   (or @bundle-map
-      (let [from-file (read-from-file)]
-        (reset! bundle-map from-file))))
+      (reset! bundle-map (read-from-file))))
 
 (declare expand-keywords)
 

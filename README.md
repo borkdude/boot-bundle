@@ -110,7 +110,7 @@ Boot-bundle is a lightweight library without any external dependencies.
 ### Can I use multiple bundles and merge them?
 
 Sure!
-```
+```clojure
 (reset! boot-bundle/bundle-map 
   (merge 
     (boot-bundle/read-from-file "bundle1.edn")
