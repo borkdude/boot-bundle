@@ -1,13 +1,15 @@
 # boot-bundle
-boot-bundle, DRY for dependencies
+`boot-bundle`, DRY for dependencies
 
 > It's just data - Rich Hickey
+
+`boot-bundle` is a lightweight library without any external dependencies. 
 
 ## Why
 You have many projects with overlapping dependencies. You don't want to repeat yourself. 
 
 ## Usage
-Define a bunde file that contains a map of keywords to either:
+Define a bundle file that contains a map of keywords to either:
 - a single dependency
 - a vector of dependencies and/or keywords
 
