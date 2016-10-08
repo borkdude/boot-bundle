@@ -1,5 +1,5 @@
 # boot-bundle
-boot-bundle, DRY for dependencies
+Boot-bundle, DRY for dependencies
 
 > It's just data - Rich Hickey
 
@@ -78,11 +78,11 @@ BOOT_BUNDLE_FILE="../bundles.edn"
 
 Searching the local file system has priority over searching the classpath.
 
-Then run boot as you normally would. Everything just works. It's just data.
+That's it. You can now move on.
 
 ## Advanced usage
 
-boot-bundle lets you set the bundle map if you want to. For example, just write
+Boot-bundle lets you set the bundle map if you want to. For example, just write
 
 ```clojure
 (reset! boot-bundle/bundle-map
@@ -104,11 +104,11 @@ something else, you may want to validate yourself:
 This software was commissioned and sponsored by [Doctor Evidence](http://doctorevidence.com/). The Doctor Evidence mission is to improve clinical outcomes by finding and delivering medical evidence to healthcare professionals, medical associations, policy makers and manufacturers through revolutionary solutions that enable anyone to make informed decisions and policies using medical data that is more accessible, relevant and readable.
 
 ## FAQ
-- Why isn't boot-bundle eating its own dog food? 
+### Why isn't boot-bundle eating its own dog food? 
 
-boot-bundle has no dependencies
+Boot-bundle is a lightweight library without any external dependencies. 
 
-- Can I use multiple bundles and merge them?
+### Can I use multiple bundles and merge them?
 
 Sure!
 ```
@@ -117,8 +117,6 @@ Sure!
     (boot-bundle/read-from-file "bundle1.edn")
     (boot-bundle/read-from-file "bundle2.edn")))
 ```
-
-boot-bundle is a lightweight library without any external dependencies. 
 
 ## License
 
