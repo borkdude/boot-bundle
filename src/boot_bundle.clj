@@ -39,10 +39,10 @@
         (do (println "boot-bundle found bundle file:"
                      (.getAbsolutePath file))
             (edn/read-string (slurp file)))
-        (if-let [file (io/file (io/resource file-path))]
-          (do (println "boot-bundle found bundle file on classpath:"
-                       file-path)
-              (edn/read-string (slurp file)))
+        (if-let [resource (io/resource file-path)]
+          (do (println "boot-bundle found resource on classpath:"
+                       (str resource))
+              (edn/read-string (slurp resource)))
           (throw (RuntimeException.
                   (str "boot-bundle file not found at "
                        file-path)))))))))
