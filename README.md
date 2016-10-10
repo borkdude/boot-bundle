@@ -120,6 +120,8 @@ Sure!
     (boot-bundle/read-from-file "bundle1.edn")
     (boot-bundle/read-from-file "bundle2.edn")))
 ```
+### How do you use it?
+At work we use it in a multi-project repository. We have a `bundle.edn` file in the root and refer to it from most of the Clojure projects.
 
 ## License
 
