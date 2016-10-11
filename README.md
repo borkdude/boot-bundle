@@ -1,5 +1,5 @@
 # boot-bundle
-Boot-bundle, DRY for dependencies
+Boot-bundle, DRY for dependencies. Upgrade once, upgrade everywhere.
 
 > It's just data - Rich Hickey
 
