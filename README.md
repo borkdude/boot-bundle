@@ -1,7 +1,9 @@
 # boot-bundle
-Boot-bundle, DRY for dependencies. Upgrade once, upgrade everywhere.
+Boot-bundle, DRY for dependencies.
 
 > It's just data - Rich Hickey
+
+Upgrade once, upgrade everywhere.
 
 ## Why
 You have many projects with overlapping dependencies. You don't want to repeat yourself. 
