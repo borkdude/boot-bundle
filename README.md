@@ -129,7 +129,7 @@ At work we use it in a multi-project repository. We have a `bundle.edn` file in 
 
 Start a REPL, eval the call to `expand-keywords` and substitute this result back into your `build.boot`.
 
-```
+```clojure
 $ boot repl
 boot.user=> (use 'clojure.pprint)
 boot.user=> (pprint (expand-keywords '[:clojure]))
