@@ -123,7 +123,7 @@ Note that you don't have to define a version value if you just want to get the v
 In `boot.bundle.edn`:
 
 ```clojure
-{:myproject [mylibary "0.1.0-SNAPSHOT"]}
+{:myproject [myproject "0.1.0-SNAPSHOT"]}
 ```
 
 In `myproject`'s `build.boot`:
