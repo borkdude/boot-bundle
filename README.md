@@ -100,9 +100,26 @@ something else, you may want to validate yourself:
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
-### Version keywords
+### Versions
 
-Boot bundle supports version keywords. They are keywords in the `version` namespace and refer to string values. 
+The function `get-version` returns the version for a dependency by its keyword. This can be used to define the version of a project in `build.boot`.
+
+For example, in `boot.bundle.edn`:
+
+```clojure
+{:myproject [myproject "0.1.0-SNAPSHOT"]}
+```
+
+In `myproject`'s `build.boot`:
+
+```clojure
+(set-env! :dependencies
+          '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
+(require '[boot-bundle :refer [expand-keywords get-version]])
+(def +version+ (get-version :myproject))
+```
+
+Boot-bundle also supports version keywords. They can be if you need the same version on multiple dependencies. Version keywords are qualified with `version` and must refer to a string.
 
 Example usage:
 
@@ -117,31 +134,6 @@ In `boot.bundle.edn`:
             [io.pedestal/pedestal.tomcat        :version/pedestal]]}
 ```
 With every new Pedestal release, you only have to bump the version value.
-
-If you want to get the version of Pedestal in your `build.boot`, use `get-version`:
-
-```clojure
-(get-version :version/pedestal) ;;=> "0.5.1"
-```
-
-Note that `get-version` also works for single dependencies defined by keyword:
-
-Example:
-
-In `boot.bundle.edn`:
-
-```clojure
-{:myproject [myproject "0.1.0-SNAPSHOT"]}
-```
-
-In `myproject`'s `build.boot`:
-
-```clojure
-(set-env! :dependencies
-          '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
-(require '[boot-bundle :refer [expand-keywords get-version]])
-(def +version+ (get-version :myproject))
-```
 
 ## Funding
 
