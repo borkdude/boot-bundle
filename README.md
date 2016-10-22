@@ -100,6 +100,10 @@ something else, you may want to validate yourself:
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
+## Experimental
+
+Features mentioned in this section are experimental and may be removed in future versions.
+
 ### Version values
 
 Boot bundle supports version values. They are keywords in the `version` namespace with string values. 
