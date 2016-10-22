@@ -118,7 +118,7 @@ In the `util` library's `build.boot`, define `+version+` using the bundle:
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
 (require '[boot-bundle :refer [expand-keywords get-version]])
-(def +version+ (get-version :version/dre_common))
+(def +version+ (get-version :version/util))
 ```
 
 The only place you have to bump `util`'s version is now the bundle file. 
