@@ -102,14 +102,17 @@ something else, you may want to validate yourself:
 
 ### Managed version strings
 
-Boot bundle supports managed version strings. Example usage:
+Boot bundle supports managed version strings. They are keywords in the `version` namespace and their values are string literals. 
+
+Example usage:
+
 In `boot.bundle.edn`:
 
 ```clojure
 {:version/util "0.1.0-SNAPSHOT"
  :util [util :version/util]}
 ```
-In the `util` library's `build.boot`, define `+version+` by using the bundle:
+In the `util` library's `build.boot`, define `+version+` using the bundle:
 
 ```clojure
 (set-env! :dependencies
