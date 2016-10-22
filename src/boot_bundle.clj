@@ -26,7 +26,8 @@
          (or (string? version)
              (version-key? version))))
   (is (false? (dependency-vector? '[1 2 3])))
-  (is (true? (dependency-vector? '[org.clojure/clojure "1.8.0"]))))
+  (is (true? (dependency-vector? '[org.clojure/clojure "1.8.0"])))
+  (is (true? (dependency-vector? '[org.clojure/clojure :version/clojure]))))
 
 (with-test
   (defn version-key [[group-artifact version]]
@@ -124,8 +125,21 @@
 
 (declare expand-keywords)
 
-(defn get-version [k]
-  (k (get-bundle-map)))
+(with-test
+  (defn get-version
+    "Returns version defined by version key or version of single
+    library defined by unqualified keyword."
+    [k]
+    (let [v (k (get-bundle-map))]
+      (if (version-key? k) v
+          (when (dependency-vector? v)
+            (second v)))))
+  (with-redefs [get-bundle-map (constantly
+                                '{:version/util "0.1.0"
+                                  :clojure [org.clojure/clojure "1.8.0"]})]
+    (is (= "0.1.0" (get-version :version/util)))
+    (is (= "1.8.0" (get-version :clojure)))
+    (is (nil? (get-version :foo)))))
 
 (with-test
   (defn expand-version [[group-artifact version & rest :as dependency]]
@@ -154,19 +168,28 @@
        (RuntimeException.
         (format "Invalid bundle key: %s"
                 k)))))
-  (with-redefs [get-bundle-map
-                (constantly
-                 '{:spec     [clojure-future-spec "1.9.0-alpha13"]
-                   :clojure [[org.clojure/clojure "1.8.0"]
-                             :spec]
-                   :version/util "0.1.0"
-                   :util [util :version/util :scope "test"]})]
+  (with-redefs
+    [get-bundle-map
+     (constantly
+      '{:spec     [clojure-future-spec "1.9.0-alpha13"]
+        :clojure [[org.clojure/clojure "1.8.0"]
+                  :spec]
+        :version/pedestal "0.5.1"
+        :pedestal [[io.pedestal/pedestal.service       :version/pedestal]
+                   [io.pedestal/pedestal.service-tools :version/pedestal]
+                   [io.pedestal/pedestal.jetty         :version/pedestal]
+                   [io.pedestal/pedestal.immutant      :version/pedestal]
+                   [io.pedestal/pedestal.tomcat        :version/pedestal]]})]
     (is (thrown? RuntimeException
                  (expand-single-keyword :foo)))
     (is (= '[[clojure-future-spec "1.9.0-alpha13"]]
            (expand-single-keyword :spec)))
-    (is (= '[[util "0.1.0" :scope "test"]]
-           (expand-single-keyword :util)))))
+    (is (= '[[io.pedestal/pedestal.service       "0.5.1"]
+             [io.pedestal/pedestal.service-tools "0.5.1"]
+             [io.pedestal/pedestal.jetty         "0.5.1"]
+             [io.pedestal/pedestal.immutant      "0.5.1"]
+             [io.pedestal/pedestal.tomcat        "0.5.1"]]
+           (expand-single-keyword :pedestal)))))
 
 (with-test
   (defn expand-keywords
