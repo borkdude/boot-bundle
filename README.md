@@ -132,7 +132,7 @@ In `myproject`'s `build.boot`:
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
 (require '[boot-bundle :refer [expand-keywords get-version]])
-(def +version+ (get-version :myproject)
+(def +version+ (get-version :myproject))
 ```
 
 ## Funding
