@@ -119,7 +119,7 @@ In `myproject`'s `build.boot`:
 (def +version+ (get-version :myproject))
 ```
 
-Boot-bundle also supports version keywords. They can be if you need the same version on multiple dependencies. Version keywords are qualified with `version` and must refer to a string.
+Boot-bundle also supports version keywords. They are convenient if you need the same version on multiple dependencies. Version keywords are qualified with `version` and must refer to a string.
 
 Example usage:
 
@@ -133,7 +133,7 @@ In `boot.bundle.edn`:
             [io.pedestal/pedestal.immutant      :version/pedestal]
             [io.pedestal/pedestal.tomcat        :version/pedestal]]}
 ```
-With every new Pedestal release, you only have to bump the version value.
+With every new Pedestal release, you only have to change the version in one place.
 
 ## Funding
 
