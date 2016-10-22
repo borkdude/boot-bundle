@@ -14,29 +14,67 @@
             "boot.bundle.edn"))
 
 (with-test
-  (defn dependency-vector? [v]
-    (symbol? (first v)))
+  (defn version-key? [k]
+    (and (keyword? k)
+         (= "version" (namespace k))))
+  (is (false? (version-key? :clojure)))
+  (is (true? (version-key? :version/clojure))))
+
+(with-test
+  (defn dependency-vector? [[group-artifact version]]
+    (and (symbol? group-artifact)
+         (or (string? version)
+             (version-key? version))))
   (is (false? (dependency-vector? '[1 2 3])))
   (is (true? (dependency-vector? '[org.clojure/clojure "1.8.0"]))))
 
 (with-test
+  (defn version-key [[group-artifact version]]
+    (when (version-key? version)
+      version))
+  (is (= :version/clojure
+         (version-key '[org.clojure/clojure :version/clojure])))
+  (is (nil? (version-key '[org.clojure/clojure "1.8.0"]))))
+
+(with-test
   (defn validate-bundle [m]
     (assert (map? m) "Bundle should be a map")
-    (let [assert-vector #(assert
+    (let [grouped (group-by
+                   (fn [[k v]] (version-key? k)) m)
+          versions (into {} (grouped true))
+          dependencies (into {} (grouped false))
+          key-set (set (keys m))
+          dependency-key-set (set (keys dependencies))
+          dependency-values (vals dependencies)
+          versions-key-set (set (keys versions))
+          valid-version-key?
+          #(if-let [k (version-key %)]
+             (contains? versions-key-set k)
+             true)
+          assert-vector #(assert
                           (vector? %)
                           (format "Bundle value should be vector: %s" %))
-                   key-set (set (keys m))
-          values (vals m)]
+          assert-valid-dependency
+          #(do (assert (dependency-vector? %)
+                       (format "Invalid dependency vector: %s" %))
+               (assert (valid-version-key? %)
+                       (format "Invalid version key in: %s" %)))]
+      ;; validate versions
+      (doseq [[k v] versions]
+        (assert (string? v)
+                (format "Version value should be string: %s" v)))
+      ;; validate dependencies
       (assert (every? keyword? key-set)
               "Bundle keys should be keywords.")
-      (doseq [value values]
+      (doseq [value dependency-values]
         (assert-vector value)
-        (or (dependency-vector? value)
-            (doseq [v value]
-              (if (keyword? v)
-                (assert (contains? key-set v)
-                        (format "Invalid key reference: %s" v))
-                (assert-vector v))))))
+        (if (dependency-vector? value)
+          (assert-valid-dependency value)
+          (doseq [v value]
+            (if (keyword? v)
+              (assert (contains? dependency-key-set v)
+                      (format "Invalid key reference: %s" v))
+              (assert-valid-dependency v))))))
     m)
   (is (validate-bundle {}))
   (is (validate-bundle '{:clj-time [clj-time "0.12.0"]}))
@@ -47,6 +85,8 @@
   (is (validate-bundle '{:spec     [clojure-future-spec "1.9.0-alpha13"]
                          :clojure [[org.clojure/clojure "1.8.0"]
                                    :spec]}))
+  (is (validate-bundle '{:version/util "0.3.5"
+                         :util     [util :version/util]}))
   (is (thrown? java.lang.AssertionError
                (validate-bundle 1)))
   (is (thrown? java.lang.AssertionError
@@ -54,7 +94,10 @@
   (is (thrown? java.lang.AssertionError
                (validate-bundle {1 :foo})))
   (is (thrown? java.lang.AssertionError
-               (validate-bundle {:foo [:bar]}))))
+               (validate-bundle {:foo [:bar]})))
+  (is (thrown? java.lang.AssertionError
+               (validate-bundle
+                '{:clojure [org.clojure/clojure :version/clojure]}))))
 
 (defn read-from-file
   "Reads bundle file"
@@ -81,18 +124,32 @@
 
 (declare expand-keywords)
 
+(defn get-version [k]
+  (k (get-bundle-map)))
+
+(with-test
+  (defn expand-version [[group-artifact version & rest :as dependency]]
+    (if (version-key? version)
+      (into [group-artifact (get-version version)]
+            rest)
+      dependency))
+  (with-redefs [get-bundle-map (constantly '{:version/util "0.1.0"})]
+    (is (= '[util "0.1.0" :scope "test"]
+           (expand-version '[util "0.1.0" :scope "test"])))
+    (is (= '[util "0.1.0" :scope "test"]
+         (expand-version '[util :version/util :scope "test"])))))
+
 (with-test
   (defn expand-single-keyword
-    "Expands keyword defined in bundle. 
+    "Expands keyword defined in bundle.
      Returns vector of dependencies."
     [k]
     (if-let [deps (k (get-bundle-map))]
-      (expand-keywords
-       (if (every? #(or (vector? %)
-                        (keyword? %))
-                   deps)
-         deps
-         [deps]))
+      (mapv expand-version
+            (expand-keywords
+             (if (dependency-vector? deps)
+               [deps]
+               deps)))
       (throw
        (RuntimeException.
         (format "Invalid bundle key: %s"
@@ -101,11 +158,15 @@
                 (constantly
                  '{:spec     [clojure-future-spec "1.9.0-alpha13"]
                    :clojure [[org.clojure/clojure "1.8.0"]
-                             :spec]})]
+                             :spec]
+                   :version/util "0.1.0"
+                   :util [util :version/util :scope "test"]})]
     (is (thrown? RuntimeException
                  (expand-single-keyword :foo)))
     (is (= '[[clojure-future-spec "1.9.0-alpha13"]]
-           (expand-single-keyword :spec)))))
+           (expand-single-keyword :spec)))
+    (is (= '[[util "0.1.0" :scope "test"]]
+           (expand-single-keyword :util)))))
 
 (with-test
   (defn expand-keywords
@@ -131,4 +192,4 @@
              [clojure-future-spec "1.9.0-alpha13"]]
            (expand-keywords [:clojure])))))
 
-(comment (t/test-ns *ns*))
+#_(t/test-ns *ns*)
