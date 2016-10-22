@@ -137,7 +137,7 @@ In `myproject`'s `build.boot`:
 
 Note that `get-version` can also be called with version values:
 
-```
+```clojure
 (get-version :version/pedestal) ;;=> "0.5.1"
 ```
 
