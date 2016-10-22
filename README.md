@@ -118,7 +118,7 @@ In `boot.bundle.edn`:
 ```
 With every new Pedestal release, you only have to bump the version value.
 
-Note that you don't have to define a version value if you just want to get the version of one dependency, for example to define the version of that dependency in `boot.build`. For this use case you can also use the function `get-version`. Example:
+Note that you don't have to define a version value if you just want to get the version of one dependency, for example to define the version of that dependency in `boot.build`. For this use case you can use `get-version`. Example:
 
 In `boot.bundle.edn`:
 
@@ -133,6 +133,12 @@ In `myproject`'s `build.boot`:
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
 (require '[boot-bundle :refer [expand-keywords get-version]])
 (def +version+ (get-version :myproject))
+```
+
+Note that `get-version` can also be called with version values:
+
+```
+(get-version :version/pedestal) ;;=> "0.5.1"
 ```
 
 ## Funding
