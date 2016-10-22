@@ -2,10 +2,13 @@
 
 (set-env!
  :resource-paths #{"src"}
- :dependencies '[[adzerk/bootlaces "0.1.11" :scope "test"]])
+ :dependencies '[[adzerk/boot-test "1.1.2" :scope "test"]
+                 [adzerk/bootlaces "0.1.11" :scope "test"]])
 
 (require '[adzerk.bootlaces :refer :all])
 (bootlaces! +version+)
+
+(require '[adzerk.boot-test :refer :all])
 
 (task-options!
  pom {:project 'boot-bundle
