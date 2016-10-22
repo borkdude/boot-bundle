@@ -100,9 +100,9 @@ something else, you may want to validate yourself:
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
-### Managed version strings
+### Version values
 
-Boot bundle supports managed version values. They are keywords in the `version` namespace and their values are string literals. 
+Boot bundle supports version values. They are keywords in the `version` namespace with string values. 
 
 Example usage:
 
