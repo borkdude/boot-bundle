@@ -1,7 +1,9 @@
 # boot-bundle
-Boot-bundle, DRY for dependencies
+Boot-bundle, DRY for dependencies.
 
 > It's just data - Rich Hickey
+
+Upgrade once, upgrade everywhere.
 
 ## Why
 You have many projects with overlapping dependencies. You don't want to repeat yourself. 
@@ -119,6 +121,23 @@ Sure!
   (merge 
     (boot-bundle/read-from-file "bundle1.edn")
     (boot-bundle/read-from-file "bundle2.edn")))
+```
+### How do you use it?
+At work we use it in a multi-project repository. We have a `bundle.edn` file in the root and refer to it from most of the Clojure projects.
+
+### How can I opt out?
+
+Start a REPL, eval the call to `expand-keywords` and substitute this result back into your `build.boot`.
+
+```clojure
+$ boot repl
+boot.user=> (use 'clojure.pprint)
+boot.user=> (pprint (expand-keywords '[:clojure]))
+[[org.clojure/clojure "1.8.0"]
+ [clojure-future-spec "1.9.0-alpha13"]
+ [org.clojure/test.check "0.9.0"]
+ [org.clojure/core.async "0.2.391"]]
+nil
 ```
 
 ## License
