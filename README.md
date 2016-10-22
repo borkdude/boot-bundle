@@ -102,7 +102,7 @@ something else, you may want to validate yourself:
 
 ### Managed version strings
 
-Boot bundle supports managed version strings. They are keywords in the `version` namespace and their values are string literals. 
+Boot bundle supports managed version values. They are keywords in the `version` namespace and their values are string literals. 
 
 Example usage:
 
