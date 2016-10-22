@@ -100,10 +100,6 @@ something else, you may want to validate yourself:
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
-## Experimental
-
-Features mentioned in this section are experimental and may be removed in future versions.
-
 ### Version values
 
 Boot bundle supports version values. They are keywords in the `version` namespace with string values. 
@@ -113,20 +109,31 @@ Example usage:
 In `boot.bundle.edn`:
 
 ```clojure
-{:version/util "0.1.0-SNAPSHOT"
- :util [util :version/util]}
+{:version/pedestal "0.5.1"
+ :pedestal [[io.pedestal/pedestal.service       :version/pedestal]
+            [io.pedestal/pedestal.service-tools :version/pedestal]
+            [io.pedestal/pedestal.jetty         :version/pedestal]
+            [io.pedestal/pedestal.immutant      :version/pedestal]
+            [io.pedestal/pedestal.tomcat        :version/pedestal]]}
 ```
-In the `util` library's `build.boot`, define `+version+` using the bundle:
+With every new Pedestal release, you only have to bump the version value.
+
+Note that you don't have to define a version value if you just want to get the version of one dependency, for example to define the version of that dependency in `boot.build`. For this use case you can also use the function `get-version`. Example:
+
+In `boot.bundle.edn`:
+
+```clojure
+{:myproject [mylibary "0.1.0-SNAPSHOT"]}
+```
+
+In `myproject`'s `build.boot`:
 
 ```clojure
 (set-env! :dependencies
           '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
 (require '[boot-bundle :refer [expand-keywords get-version]])
-(def +version+ (get-version :version/util))
+(def +version+ (get-version :myproject)
 ```
-
-The only place you have to bump `util`'s version is now the bundle file. 
-All users of `:util` are automatically upgraded.
 
 ## Funding
 
