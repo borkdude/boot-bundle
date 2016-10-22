@@ -84,13 +84,13 @@ That's it. You can now use boot as you normally would.
 
 ## Advanced usage
 
+### Manipulating the bundle map
 Boot-bundle lets you set the bundle map if you want to. For example, just write
 
 ```clojure
 (reset! boot-bundle/bundle-map
         (boot-bundle/read-from-file "../bundle.edn"))
 ```
-
 Note that validation only happens when using `read-from-file`, so when doing
 something else, you may want to validate yourself:
  
@@ -99,6 +99,27 @@ something else, you may want to validate yourself:
        #(boot-bundle/validate-bundle 
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
+
+### Managed version strings
+
+Boot bundle supports managed version strings. Example usage:
+In `boot.bundle.edn`:
+
+```clojure
+{:version/util "0.1.0-SNAPSHOT"
+ :util [util :version/util]}
+```
+In the `util` library's `build.boot`, define `+version+` by using the bundle:
+
+```clojure
+(set-env! :dependencies
+          '[[boot-bundle "0.1.0-SNAPSHOT" :scope "test"]])
+(require '[boot-bundle :refer [expand-keywords get-version]])
+(def +version+ (get-version :version/dre_common))
+```
+
+The only place you have to bump `util`'s version is now the bundle file. 
+All users of `:util` are automatically upgraded.
 
 ## Funding
 
