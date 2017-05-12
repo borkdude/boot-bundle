@@ -1,12 +1,12 @@
 # boot-bundle
-Boot-bundle, DRY for dependencies.
+Boot-bundle: managed dependencies for [boot](https://github.com/boot-clj/boot).
 
 > It's just data - Rich Hickey
 
-Upgrade once, upgrade everywhere.
+Don't repeat yourself for library coordinates. Upgrade once, upgrade everywhere.
 
 ## Why
-You have many projects with overlapping dependencies. You don't want to repeat yourself. 
+The most common scenario for usage of this library is when you have a repository with multiple boot projects and these projects have overlapping dependencies that you want to manage in one place. That one place is the bundle file. 
 
 ## Usage
 Define a bundle file that contains a map of keywords to either:
@@ -93,10 +93,10 @@ Boot-bundle lets you set the bundle map if you want to. For example, just write
 ```
 Note that validation only happens when using `read-from-file`, so when doing
 something else, you may want to validate yourself:
- 
+
 ```clojure
 (swap! boot-bundle/bundle-map
-       #(boot-bundle/validate-bundle 
+       #(boot-bundle/validate-bundle
          (assoc % :schema '[prismatic/schema "1.1.3"])))
 ```
 
@@ -144,16 +144,16 @@ This software was commissioned and sponsored by [Doctor Evidence](http://doctore
 
 Check out [this example](https://github.com/borkdude/boot.bundle.edn).
 
-### Why isn't boot-bundle eating its own dog food? 
+### Why isn't boot-bundle eating its own dog food?
 
-Boot-bundle is a lightweight library without any external dependencies. 
+Boot-bundle is a lightweight library without any external dependencies.
 
 ### Can I use multiple bundles and merge them?
 
 Sure!
 ```clojure
-(reset! boot-bundle/bundle-map 
-  (merge 
+(reset! boot-bundle/bundle-map
+  (merge
     (boot-bundle/read-from-file "bundle1.edn")
     (boot-bundle/read-from-file "bundle2.edn")))
 ```
