@@ -1,7 +1,7 @@
 # boot-bundle
 Boot-bundle: managed dependencies for [boot](https://github.com/boot-clj/boot).
 
-> It's just data - Rich Hickey
+[![Clojars Project](https://img.shields.io/clojars/v/boot-bundle.svg)](https://clojars.org/boot-bundle)
 
 Don't repeat yourself for library coordinates. Upgrade once, upgrade everywhere.
 
