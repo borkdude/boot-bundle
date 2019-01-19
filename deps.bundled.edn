@@ -1,0 +1,6 @@
+{:deps {}
+ ;; comment
+ :aliases
+ {:rewrite {:extra-deps {rewrite-clj {:mvn/version "0.6.1"}}
+            :main-opts ["-m" "boot-bundle.rewrite"]}
+  :bundled {:extra-deps {dude {:mvn/version "0.5.2"}}}}}

@@ -215,4 +215,7 @@
              [clojure-future-spec "1.9.0-alpha13"]]
            (expand-keywords [:clojure])))))
 
-#_(t/test-ns *ns*)
+;;;; Scratch
+
+(comment
+  (t/test-ns *ns*))
